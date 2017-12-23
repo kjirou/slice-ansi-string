@@ -1,3 +1,3 @@
-const {sliceAnsi} = require('./slice-ansi');
+const sliceAnsiString = require('./slice-ansi-string');
 
-module.exports = sliceAnsi;
+module.exports = sliceAnsiString;
