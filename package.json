@@ -1,0 +1,34 @@
+{
+  "name": "slice-ansi-string",
+  "version": "0.0.0",
+  "description": "Slice a string included ANSI escape codes",
+  "main": "index.js",
+  "scripts": {
+    "test": "$(npm bin)/mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kjirou/slice-ansi-string.git"
+  },
+  "keywords": [
+    "ansi",
+    "string",
+    "terminal",
+    "tui"
+  ],
+  "author": "kjirou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kjirou/slice-ansi-string/issues"
+  },
+  "homepage": "https://github.com/kjirou/slice-ansi-string#readme",
+  "devDependencies": {
+    "chalk": "^2.3.0",
+    "mocha": "^4.0.1"
+  },
+  "dependencies": {
+    "ansi-styles": "^3.2.0",
+    "astral-regex": "^1.0.0",
+    "is-fullwidth-code-point": "^2.0.0"
+  }
+}
