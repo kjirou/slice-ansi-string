@@ -234,4 +234,68 @@ describe('lib/slice-ansi-string', function() {
       assert.strictEqual(sliceAnsiString(str, 3, 4), chalk.red('d'));
     });
   });
+
+  describe('other SGR effects included', function() {
+    [
+      'bold',
+      'dim',
+      'italic',
+      'underline',
+      'inverse',
+      'hidden',
+      'strikethrough',
+    ].forEach(chalkMethodName => {
+      describe(chalkMethodName, function() {
+        const str = 'a' + chalk[chalkMethodName]('bc') + 'd';
+
+        it('(str, 0, 0) === ""', function() {
+          assert.strictEqual(sliceAnsiString(str, 0, 0), '');
+        });
+
+        it('(str, 0, 1) === "a"', function() {
+          assert.strictEqual(sliceAnsiString(str, 0, 1), 'a');
+        });
+
+        it(`(str, 0, 2) === "a" + ${chalkMethodName}("b")`, function() {
+          assert.strictEqual(sliceAnsiString(str, 0, 2), 'a' + chalk[chalkMethodName]('b'));
+        });
+
+        it(`(str, 0, 3) === "a" + ${chalkMethodName}("bc")`, function() {
+          assert.strictEqual(sliceAnsiString(str, 0, 3), 'a' + chalk[chalkMethodName]('bc'));
+        });
+
+        it(`(str, 0, 4) === "a" + ${chalkMethodName}("bc") + "d"`, function() {
+          assert.strictEqual(sliceAnsiString(str, 0, 4), 'a' + chalk[chalkMethodName]('bc') + 'd');
+        });
+
+        it(`(str, 0, 5) === "a" + ${chalkMethodName}("bc") + "d"`, function() {
+          assert.strictEqual(sliceAnsiString(str, 0, 4), 'a' + chalk[chalkMethodName]('bc') + 'd');
+        });
+
+        it(`(str, 0) === "a" + ${chalkMethodName}("bc") + "d"`, function() {
+          assert.strictEqual(sliceAnsiString(str, 0, 4), 'a' + chalk[chalkMethodName]('bc') + 'd');
+        });
+
+        it('(str, 2, 2) === ""', function() {
+          assert.strictEqual(sliceAnsiString(str, 2, 2), '');
+        });
+
+        it(`(str, 2, 3) === ${chalkMethodName}("c")`, function() {
+          assert.strictEqual(sliceAnsiString(str, 2, 3), chalk[chalkMethodName]('c'));
+        });
+
+        it(`(str, 2, 4) === ${chalkMethodName}("c") + "d"`, function() {
+          assert.strictEqual(sliceAnsiString(str, 2, 4), chalk[chalkMethodName]('c') + 'd');
+        });
+
+        it('(str, 3, 3) === ""', function() {
+          assert.strictEqual(sliceAnsiString(str, 3, 3), '');
+        });
+
+        it('(str, 3, 4) === "d"', function() {
+          assert.strictEqual(sliceAnsiString(str, 3, 4), 'd');
+        });
+      });
+    });
+  });
 });
