@@ -8,22 +8,22 @@ const sliceAnsiString = require('../../lib/slice-ansi-string');
 describe('lib/slice-ansi-string', function() {
   const SURROGATE_PAIR_CHARACTER = '\uD867\uDE3D';  // === "\u{29E3D}"
 
-  const stringToArrayConsideringSurrogatePair = (str) => {
-    return str.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g) || [];
-  };
-
-  /**
-   * fn('abc') -> [0, 1, 2]
-   */
-  const generateBeginIndexes = (str) => {
-    return stringToArrayConsideringSurrogatePair(str).map((_, i) => i).concat([str.length, str.length + 1]);
-  };
-
-  const generateEndIndexes = (str) => {
-    return generateBeginIndexes(str).concat([undefined]);
-  };
-
   describe('ordinary string only', function() {
+    const stringToArrayConsideringSurrogatePair = (str) => {
+      return str.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g) || [];
+    };
+
+    /**
+     * fn('abc') -> [0, 1, 2]
+     */
+    const generateBeginIndexes = (str) => {
+      return stringToArrayConsideringSurrogatePair(str).map((_, i) => i).concat([str.length, str.length + 1]);
+    };
+
+    const generateEndIndexes = (str) => {
+      return generateBeginIndexes(str).concat([undefined]);
+    };
+
     describe('working like `string.slice`', function() {
       const strings = [
         'abcde',
