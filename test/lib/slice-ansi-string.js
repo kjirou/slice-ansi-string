@@ -325,6 +325,20 @@ describe('lib/slice-ansi-string', function() {
         });
       });
     });
+
+    describe('reset, such as `"<red><underline>ab<reset>cd"`', function() {
+      const {red, underline} = ansiStyles;
+      const resetAnsi = '\u001b[0m';
+      const str = `${red.open}${underline.open}ab${resetAnsi}cd`;
+
+      it('(str, 0, 2) === "<red><underline>ab</underline></red>"', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 2), chalk.red.underline('ab'));
+      });
+
+      it('(str, 0, 3) === "<red><underline>ab<reset>c"', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 3), `${red.open}${underline.open}ab` + resetAnsi + 'c');
+      });
+    });
   });
 
   //

@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/slice-ansi-string.svg)](https://badge.fury.io/js/slice-ansi-string)
 [![Build Status](https://travis-ci.org/kjirou/slice-ansi-string.svg?branch=master)](https://travis-ci.org/kjirou/slice-ansi-string)
 
-Slice a string included ANSI escape codes
+Slice a string included [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code)
 
 In some use cases [slice-ansi](https://github.com/chalk/slice-ansi) did not work properly.
 This is what I reworked with reference to [slice-ansi](https://github.com/chalk/slice-ansi).
