@@ -1,3 +1,4 @@
+const ansiStyles = require('ansi-styles');
 const assert = require('assert');
 const chalk = require('chalk');
 const {describe, it} = require('mocha');
@@ -322,6 +323,147 @@ describe('lib/slice-ansi-string', function() {
         it('(str, 3, 4) === "d"', function() {
           assert.strictEqual(sliceAnsiString(str, 3, 4), 'd');
         });
+      });
+    });
+  });
+
+  //
+  // CAUTION:
+  //   "chalk" makes a strange working when it gains multiple SGR effects.
+  //
+  //   For example, `chalk.dim.bold('X')` returns '\u001b[2m\u001b[1mX\u001b[2m\u001b[22m'.
+  //   At least the back "\u001b[2m" appears unnecessary for me.
+  //
+  //   Therefore, if the multiple SGR effects exist, does not use "chalk" for testing.
+  //   And does not comply with "chalk"'s specifications.
+  //
+  describe('multiple SGR effects are applied', function() {
+    describe('2 effects, such as "<red>a<underline>bc</underline>d</red>"', function() {
+      const {red, underline} = ansiStyles;
+      const str = `${red.open}a${underline.open}bc${underline.close}d${red.close}`;
+
+      it('(str, 0, 0) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 0), '');
+      });
+
+      it('(str, 0, 1) === "<red>a</red>"', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 1), `${red.open}a${red.close}`);
+      });
+
+      it('(str, 0, 2) === "<red>a<underline>b</underline></red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 0, 2),
+          `${red.open}a${underline.open}b${underline.close}${red.close}`
+        );
+      });
+
+      it('(str, 0, 3) === "<red>a<underline>bc</underline></red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 0, 3),
+          `${red.open}a${underline.open}bc${underline.close}${red.close}`
+        );
+      });
+
+      it('(str, 0, 4) === "<red>a<underline>bc</underline>d</red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 0, 4),
+          `${red.open}a${underline.open}bc${underline.close}d${red.close}`
+        );
+      });
+
+      it('(str, 0, 5) === "<red>a<underline>bc</underline>d</red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 0, 4),
+          `${red.open}a${underline.open}bc${underline.close}d${red.close}`
+        );
+      });
+
+      it('(str, 0) === "<red>a<underline>bc</underline>d</red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 0, 4),
+          `${red.open}a${underline.open}bc${underline.close}d${red.close}`
+        );
+      });
+
+      it('(str, 1, 1) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 1, 1), '');
+      });
+
+      it('(str, 1, 2) === "<red><underline>b</underline></red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 1, 2),
+          `${red.open}${underline.open}b${underline.close}${red.close}`
+        );
+      });
+
+      it('(str, 1, 3) === "<red><underline>bc</underline></red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 1, 3),
+          `${red.open}${underline.open}bc${underline.close}${red.close}`
+        );
+      });
+
+      it('(str, 1, 4) === "<red><underline>bc</underline>d</red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 1, 4),
+          `${red.open}${underline.open}bc${underline.close}d${red.close}`
+        );
+      });
+
+      it('(str, 2, 2) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 2, 2), '');
+      });
+
+      it('(str, 2, 3) === "<red><underline>c</underline></red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 2, 3),
+          `${red.open}${underline.open}c${underline.close}${red.close}`
+        );
+      });
+
+      it('(str, 2, 4) === "<red><underline>c</underline>d</red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 2, 4),
+          `${red.open}${underline.open}c${underline.close}d${red.close}`
+        );
+      });
+
+      it('(str, 3, 3) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 3, 3), '');
+      });
+
+      it('(str, 3, 4) === "<red>d</red>"', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 3, 4),
+          `${red.open}d${red.close}`
+        );
+      });
+    });
+
+    describe('2 effects, such as "<dim><bold>ab</bold></dim>"', function() {
+      const {dim, bold} = ansiStyles;
+      const str = `${dim.open}${bold.open}ab${bold.close}${dim.close}`;
+
+      it('(str, 0, 0) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 0), '');
+      });
+
+      it('(str, 0, 1) === <dim><bold>a</bold></dim>', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 0, 1),
+          `${dim.open}${bold.open}a${bold.close}${dim.close}`
+        );
+      });
+
+      it('(str, 1, 2) === <dim><bold>b</bold></dim>', function() {
+        assert.strictEqual(
+          sliceAnsiString(str, 1, 2),
+          `${dim.open}${bold.open}b${bold.close}${dim.close}`
+        );
+      });
+
+      it('(str, 2, 3) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 2, 3), '');
       });
     });
   });
