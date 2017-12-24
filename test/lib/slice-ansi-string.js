@@ -65,7 +65,7 @@ describe('lib/slice-ansi-string', function() {
   });
 
   describe('16 colors included', function() {
-    describe('single color string', function() {
+    describe('single color string, such as `red("abc")`', function() {
       const str = chalk.red('abc');
 
       it('(str, 0, 0) === ""', function() {
@@ -105,7 +105,7 @@ describe('lib/slice-ansi-string', function() {
       });
     });
 
-    describe('different colors are adjacent', function() {
+    describe('different colors are adjacent, such as `red("ab") + green("cd")`', function() {
       const str = chalk.red('ab') + chalk.green('cd');
 
       it('(str, 1, 1) === ""', function() {
@@ -133,7 +133,7 @@ describe('lib/slice-ansi-string', function() {
       });
     });
 
-    describe('ordinary string and colored string are adjacent', function() {
+    describe('ordinary string and colored string are adjacent, such as `"a" + red("b") + "c" + green("d")`', function() {
       const str = 'a' + chalk.red('b') + 'c' + chalk.green('d');
 
       it('(str, 0, 0) === ""', function() {
@@ -178,7 +178,7 @@ describe('lib/slice-ansi-string', function() {
     });
   });
 
-  describe('256 colors included', function() {
+  describe('256 colors included, such as `"a" + 256("bc") + red("d")`', function() {
     const wrapTo256 = (str) => `\u001b[38;5;001m${str}\u001b[39m`;
     const str = 'a' + wrapTo256('bc') + chalk.red('d');
 
@@ -245,7 +245,7 @@ describe('lib/slice-ansi-string', function() {
       'hidden',
       'strikethrough',
     ].forEach(chalkMethodName => {
-      describe(chalkMethodName, function() {
+      describe(`${chalkMethodName}, such as \`"a" + ${chalkMethodName}("bc") + "d"\``, function() {
         const str = 'a' + chalk[chalkMethodName]('bc') + 'd';
 
         it('(str, 0, 0) === ""', function() {
