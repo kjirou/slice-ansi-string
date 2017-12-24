@@ -132,5 +132,37 @@ describe('lib/slice-ansi-string', function() {
         assert.strictEqual(sliceAnsiString(str, 1, 4), chalk.red('b') + chalk.green('cd'));
       });
     });
+
+    describe('ordinary string and colored string are adjacent', function() {
+      const str = 'a' + chalk.red('b') + 'c' + chalk.green('d');
+
+      it('(str, 0, 0) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 0), '');
+      });
+
+      it('(str, 0, 1) === "a"', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 1), 'a');
+      });
+
+      it('(str, 0, 2) === "a" + red("b")', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 2), 'a' + chalk.red('b'));
+      });
+
+      it('(str, 0, 3) === "a" + red("b") + "c"', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 3), 'a' + chalk.red('b') + 'c');
+      });
+
+      it('(str, 0, 4) === "a" + red("b") + "c" + green("d")', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 4), 'a' + chalk.red('b') + 'c' + chalk.green('d'));
+      });
+
+      it('(str, 0, 5) === "a" + red("b") + "c" + green("d")', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 4), 'a' + chalk.red('b') + 'c' + chalk.green('d'));
+      });
+
+      it('(str, 0) === "a" + red("b") + "c" + green("d")', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 4), 'a' + chalk.red('b') + 'c' + chalk.green('d'));
+      });
+    });
   });
 });
