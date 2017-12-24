@@ -68,8 +68,8 @@ describe('lib/slice-ansi-string', function() {
     describe('single colored `chalk.red("abc")`', function() {
       const str = chalk.red('abc');
 
-      it('(str, 0, 0) === chalk.red("")', function() {
-        assert.strictEqual(sliceAnsiString(str, 0, 0), chalk.red(''));
+      it('(str, 0, 0) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 0, 0), '');
       });
 
       it('(str, 0, 1) === chalk.red("a")', function() {
@@ -90,6 +90,18 @@ describe('lib/slice-ansi-string', function() {
 
       it('(str, 0) === chalk.red("abc")', function() {
         assert.strictEqual(sliceAnsiString(str, 0), chalk.red('abc'));
+      });
+
+      it('(str, 2, 2) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 2, 2), '');
+      });
+
+      it('(str, 2, 3) === chalk.red("c")', function() {
+        assert.strictEqual(sliceAnsiString(str, 2, 3), chalk.red('c'));
+      });
+
+      it('(str, 2, 4) === chalk.red("c")', function() {
+        assert.strictEqual(sliceAnsiString(str, 2, 4), chalk.red('c'));
       });
     });
   });
