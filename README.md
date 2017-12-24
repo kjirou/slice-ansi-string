@@ -58,4 +58,4 @@ console.log(sliceAnsiString(str, 1, 3));  // -> "\u001b[31mB\u001b[4mC\u001b[24m
 - Multibyte characters and surrogate pairs are counted as one character.
 - It may not be possible to correspond to the character string output by [chalk](https://github.com/chalk/chalk).
   - For example, `chalk.dim.bold('A')` outputs `"\u001b[2m\u001b[1mA\u001b[2m\u001b[22m"`, but this library expects `"\u001b[2m\u001b[1mA\u001b[22m\u001b[22m"`.
-  - However, `chalk.bold.underline.red('A')` returns expected outputs since it may be a specific problem of `dim.bold`.
+  - However, `chalk.bold.underline.red('A')` returns expected outputs, so it may be a specific problem of `dim.bold`.
