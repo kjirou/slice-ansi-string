@@ -1,6 +1,6 @@
 {
   "name": "slice-ansi-string",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Slice a string included ANSI escape codes",
   "main": "index.js",
   "scripts": {
