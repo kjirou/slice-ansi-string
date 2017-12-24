@@ -65,30 +65,30 @@ describe('lib/slice-ansi-string', function() {
   });
 
   describe('16 colors included', function() {
-    describe('single colored `chalk.red("abc")`', function() {
+    describe('single color string', function() {
       const str = chalk.red('abc');
 
       it('(str, 0, 0) === ""', function() {
         assert.strictEqual(sliceAnsiString(str, 0, 0), '');
       });
 
-      it('(str, 0, 1) === chalk.red("a")', function() {
+      it('(str, 0, 1) === red("a")', function() {
         assert.strictEqual(sliceAnsiString(str, 0, 1), chalk.red('a'));
       });
 
-      it('(str, 0, 2) === chalk.red("ab")', function() {
+      it('(str, 0, 2) === red("ab")', function() {
         assert.strictEqual(sliceAnsiString(str, 0, 2), chalk.red('ab'));
       });
 
-      it('(str, 0, 3) === chalk.red("abc")', function() {
+      it('(str, 0, 3) === red("abc")', function() {
         assert.strictEqual(sliceAnsiString(str, 0, 3), chalk.red('abc'));
       });
 
-      it('(str, 0, 4) === chalk.red("abc")', function() {
+      it('(str, 0, 4) === red("abc")', function() {
         assert.strictEqual(sliceAnsiString(str, 0, 3), chalk.red('abc'));
       });
 
-      it('(str, 0) === chalk.red("abc")', function() {
+      it('(str, 0) === red("abc")', function() {
         assert.strictEqual(sliceAnsiString(str, 0), chalk.red('abc'));
       });
 
@@ -96,12 +96,40 @@ describe('lib/slice-ansi-string', function() {
         assert.strictEqual(sliceAnsiString(str, 2, 2), '');
       });
 
-      it('(str, 2, 3) === chalk.red("c")', function() {
+      it('(str, 2, 3) === red("c")', function() {
         assert.strictEqual(sliceAnsiString(str, 2, 3), chalk.red('c'));
       });
 
-      it('(str, 2, 4) === chalk.red("c")', function() {
+      it('(str, 2, 4) === red("c")', function() {
         assert.strictEqual(sliceAnsiString(str, 2, 4), chalk.red('c'));
+      });
+    });
+
+    describe('different colors are adjacent', function() {
+      const str = chalk.red('ab') + chalk.green('cd');
+
+      it('(str, 1, 1) === ""', function() {
+        assert.strictEqual(sliceAnsiString(str, 1, 1), '');
+      });
+
+      it('(str, 1, 2) === red("b")', function() {
+        assert.strictEqual(sliceAnsiString(str, 1, 2), chalk.red('b'));
+      });
+
+      it('(str, 1, 3) === red("b") + green("c")', function() {
+        assert.strictEqual(sliceAnsiString(str, 1, 3), chalk.red('b') + chalk.green('c'));
+      });
+
+      it('(str, 1, 4) === red("b") + green("cd")', function() {
+        assert.strictEqual(sliceAnsiString(str, 1, 4), chalk.red('b') + chalk.green('cd'));
+      });
+
+      it('(str, 1, 5) === red("b") + green("cd")', function() {
+        assert.strictEqual(sliceAnsiString(str, 1, 4), chalk.red('b') + chalk.green('cd'));
+      });
+
+      it('(str, 1) === red("b") + green("cd")', function() {
+        assert.strictEqual(sliceAnsiString(str, 1, 4), chalk.red('b') + chalk.green('cd'));
       });
     });
   });
